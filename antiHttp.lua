@@ -53,11 +53,13 @@ end
 do
 	local original = game.HttpGet
 	hookfunction(game.HttpGet, function(self, ...)
-		if scriptSettings.stopped then
+		local link = tostring(...)
+		
+		if scriptSettings.stopped or link == "https://raw.githubusercontent.com/darkceius/random-stuff/main/antiHttp.lua" then
 			return original(self, ...)
 		end
 		if scriptSettings.printLinks then
-			local link = tostring(...)
+		
 			cprint("red", "A script tried calling game:HttpGet with the following link: \""..link.."\"")
 		end
 		return nil
