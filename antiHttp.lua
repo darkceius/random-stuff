@@ -9,7 +9,7 @@ end
 
 function cprint(color, text)
 	task.spawn(function()
-		rconsoleprint("@@".. string.upper(color) .. "@@\n")
+		--rconsoleprint("@@".. string.upper(color) .. "@@\n")
 		rconsoleprint(text)
 	end)
 end
