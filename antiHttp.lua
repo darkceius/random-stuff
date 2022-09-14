@@ -8,13 +8,13 @@ if not syn then
 end
 
 function cprint(color, text)
-	rconsoleprint("@@".. string.upper(color) .. "@@")
-	rconsoleprint(text)
+	task.spawn(function()
+		rconsoleprint("@@".. string.upper(color) .. "@@\n")
+		rconsoleprint(text)
+	end)
 end
 
 cprint("green", "Successfully started Dark's Anti HTTPs")
-cprint("green", "You can index the required module to temporarly stop the script or disable output prints.")
-cprint("green", "<module>.printLinks: boolean ; <module>.stopped: boolean")
 
 local httpService = game:GetService("HttpService")
 local scriptSettings = {
