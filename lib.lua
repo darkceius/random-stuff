@@ -823,7 +823,7 @@ function categories:createToggle(text, default)
 	return ev.Event, function(new)
 		value = new
 		update()
-	end
+	end, Label
 end
 function categories:createButton(text)
 	local Label = Instance.new("Frame")
@@ -1204,7 +1204,7 @@ function categories:createSlider(text, data, bePrecise)
 	end
 	
 	local function setCurrentValue(num)
-		Bar.Size = UDim2.new(num/maxV, 0, 1, 0)
+		tweenService:Create(Bar, TweenInfo.new(0.05), {Size=UDim2.new(num/maxV, 0, 1, 0)}):Play()
 		Count.Text = "[ ".. tostring(num) .. " ]"
 	end
 	
@@ -1244,7 +1244,7 @@ function categories:createSlider(text, data, bePrecise)
 	
 	setCurrentValue((startV or 0))
 	self.realSelf:refreshCategoriesVisibility()
-	return ev.Event, Slider
+	return ev.Event, setCurrentValue, Slider
 end
 
 function categories:createDropdown(text, options, _starter)
@@ -1557,7 +1557,7 @@ function categories:createDropdown(text, options, _starter)
 	changeSelected((_starter or "None"))
 	Dropdown.Parent = self.container
 	self.realSelf:refreshCategoriesVisibility()
-	return onOptionSelected.Event, updateOptions, changeSelected
+	return onOptionSelected.Event, updateOptions, changeSelected, Dropdown
 end
 
 function categories:createLabel(text)
