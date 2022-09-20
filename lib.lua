@@ -6,6 +6,7 @@
 --[[
 TODO:
 * Color Picker
+* Key Bind
 ]]--
 
 -- Tables:
@@ -1313,7 +1314,7 @@ function categories:createDropdown(text, options, _starter)
 	local UIGradient1 = Instance.new("UIGradient")
 	UIGradient1.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.0625), NumberSequenceKeypoint.new(0.9563025, 0.6875), NumberSequenceKeypoint.new(1, 0.29375)})
 	UIGradient1.Rotation = 90
-	UIGradient1.Color = ColorSequence.new(Color3.fromRGB(255, 255, 255), Color3.fromRGB(64, 166, 230))
+	UIGradient1.Color = self.realSelf.backgroundColor
 	UIGradient1.Parent = Label
 
 	local DropdownPart = Instance.new("Frame")
