@@ -6,7 +6,6 @@
 --[[
 TODO:
 * Color Picker
-* Key Bind
 ]]--
 
 -- Tables:
@@ -333,18 +332,18 @@ function lib.createLibrary(name, toggleKey, backgroundColor, textFont)
 	end))
 	
 	-- Toggle UI
-	self:newConnection(uis.InputBegan:Connect(function(input, bg)
-		if bg then
-			return
-		end
-		if self.canDoActions == false then
-			return
-		end
+	--self:newConnection(uis.InputBegan:Connect(function(input, bg)
+	--	if bg then
+	--		return
+	--	end
+	--	if self.canDoActions == false then
+	--		return
+	--	end
 		
-		if input.KeyCode == self.keyCode then
-			self:toggleInterface(not self.enabled)
-		end
-	end))
+	--	if input.KeyCode == self.keyCode then
+	--		self:toggleInterface(not self.enabled)
+	--	end
+	--end))
 	
 	-- Big Frames:
 	self.scriptFeaturesFrame = self:createBigUIFrameWithOptionsScroll("Script Features", name)
@@ -457,6 +456,9 @@ function lib.createLibrary(name, toggleKey, backgroundColor, textFont)
 	uiSettingsCategory:createButton("> Force Stop Script"):Connect(function()
 		debris:AddItem(uiInterface, 0)
 	end)
+	uiSettingsCategory:createKeybind("> Toggle UI Keybind", toggleKey):Connect(function()
+		self:toggleInterface(not self.enabled)
+	end)
 	uiSettingsCategory:createLabel("Developers:")
 	uiSettingsCategory:createLabel("> _dark - UI Designer & Scripter  ")
 	uiSettingsCategory:createLabel("> Paladinzzz2 - Sound Effects  ")
@@ -479,6 +481,7 @@ function lib.createLibrary(name, toggleKey, backgroundColor, textFont)
 	task.spawn(function()
 		wait(.6)
 		uiInterface.Enabled = true
+		self:toggleInterface(true)
 	end)
 	
 	return self
@@ -718,6 +721,190 @@ function lib:createNotification(desc, scaled)
 			debris:AddItem(Notification, .35)
 		end)
 	end)
+end
+
+function categories:createKeybind(text, default)
+
+	local Keybind = Instance.new("Frame")
+	Keybind.Name = "Keybind_"..string.gsub(text," ", "_")
+	Keybind.AnchorPoint = Vector2.new(1, 0)
+	Keybind.Size = UDim2.new(0.99, 0, 0.06, 0)
+	Keybind.Position = UDim2.new(0.2792669, 0, 0.0566183, 0)
+	Keybind.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+
+	local UICorner = Instance.new("UICorner")
+	UICorner.CornerRadius = UDim.new(0, 5)
+	UICorner.Parent = Keybind
+
+	local UIGradient = Instance.new("UIGradient")
+	UIGradient.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.0625), NumberSequenceKeypoint.new(0.9563025, 0.6875), NumberSequenceKeypoint.new(1, 0.29375)})
+	UIGradient.Rotation = 90
+	UIGradient.Color = ColorSequence.new(Color3.fromRGB(44, 44, 44), Color3.fromRGB(26, 26, 26))
+	UIGradient.Parent = Keybind
+
+	local UIStroke = Instance.new("UIStroke")
+	UIStroke.Transparency = 0.5
+	UIStroke.Parent = Keybind
+
+	local Image = Instance.new("ImageLabel")
+	Image.Name = "Image"
+	Image.AnchorPoint = Vector2.new(1, 0.5)
+	Image.Size = UDim2.new(0.05, 0, 0.9, 0)
+	Image.BackgroundTransparency = 1
+	Image.Position = UDim2.new(1, 0, 0.5, 0)
+	Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Image.ScaleType = Enum.ScaleType.Fit
+	Image.ImageTransparency = 0.5
+	Image.Image = "rbxassetid://7072717958"
+	Image.Parent = Keybind
+	local UIGradient1 = Instance.new("UIGradient")
+	UIGradient1.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.0625), NumberSequenceKeypoint.new(0.9563025, 0.6875), NumberSequenceKeypoint.new(1, 0.29375)})
+	UIGradient1.Rotation = 90
+	UIGradient1.Color = (self.realSelf.backgroundColor)
+	UIGradient1.Parent = Image
+	local Label = Instance.new("TextLabel")
+	Label.Name = "Label"
+	Label.AnchorPoint = Vector2.new(0.5, 0.5)
+	Label.Size = UDim2.new(0.6511514, 0, 0.8383883, 0)
+	Label.BorderColor3 = Color3.fromRGB(27, 42, 53)
+	Label.BackgroundTransparency = 1
+	Label.Position = UDim2.new(0.3329826, 0, 0.4735007, 0)
+	Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Label.FontSize = Enum.FontSize.Size14
+	Label.TextSize = 14
+	Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Label.Text = text
+	Label.TextWrapped = true
+	Label.Font = self.realSelf.textFont
+	Label.TextWrap = true
+	Label.TextXAlignment = Enum.TextXAlignment.Left
+	Label.TextScaled = true
+	Label.Parent = Keybind
+
+	local UIGradient1 = Instance.new("UIGradient")
+	UIGradient1.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.0625), NumberSequenceKeypoint.new(0.9563025, 0.6875), NumberSequenceKeypoint.new(1, 0.29375)})
+	UIGradient1.Rotation = 90
+	UIGradient1.Color = self.realSelf.backgroundColor
+	UIGradient1.Parent = Label
+
+	local KeybindPart = Instance.new("Frame")
+	KeybindPart.Name = "KeybindPart"
+	KeybindPart.AnchorPoint = Vector2.new(0, 0.5)
+	KeybindPart.Size = UDim2.new(0.281179, 0, 0.7853916, 0)
+	KeybindPart.Position = UDim2.new(0.668821, 0, 0.4999998, 0)
+	KeybindPart.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	KeybindPart.Parent = Keybind
+
+	local UICorner1 = Instance.new("UICorner")
+	UICorner1.CornerRadius = UDim.new(0, 5)
+	UICorner1.Parent = KeybindPart
+
+	local UIGradient2 = Instance.new("UIGradient")
+	UIGradient2.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.0625), NumberSequenceKeypoint.new(0.9563025, 0.6875), NumberSequenceKeypoint.new(1, 0.29375)})
+	UIGradient2.Rotation = 90
+	UIGradient2.Color = ColorSequence.new(Color3.fromRGB(44, 44, 44), Color3.fromRGB(26, 26, 26))
+	UIGradient2.Parent = KeybindPart
+
+	local UIStroke1 = Instance.new("UIStroke")
+	UIStroke1.Transparency = 0.5
+	UIStroke1.Parent = KeybindPart
+
+	local CurrentKey = Instance.new("TextLabel")
+	CurrentKey.Name = "CurrentKey"
+	CurrentKey.Size = UDim2.new(1, 0, 0.8, 0)
+	CurrentKey.BorderColor3 = Color3.fromRGB(27, 42, 53)
+	CurrentKey.BackgroundTransparency = 1
+	CurrentKey.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	CurrentKey.FontSize = Enum.FontSize.Size14
+	CurrentKey.TextSize = 14
+	CurrentKey.TextColor3 = Color3.fromRGB(255, 255, 255)
+	CurrentKey.Text = "LeftControl"
+	CurrentKey.TextWrapped = true
+	CurrentKey.Font = self.realSelf.textFont
+	CurrentKey.TextWrap = true
+	CurrentKey.TextScaled = true
+	CurrentKey.Parent = KeybindPart
+
+	local UIGradient3 = Instance.new("UIGradient")
+	UIGradient3.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.0625), NumberSequenceKeypoint.new(0.9563025, 0.6875), NumberSequenceKeypoint.new(1, 0.29375)})
+	UIGradient3.Rotation = 90
+	UIGradient3.Color = self.realSelf.backgroundColor
+	UIGradient3.Parent = CurrentKey
+
+	local Click = Instance.new("TextButton")
+	Click.Name = "Click"
+	Click.Size = UDim2.new(1, 0, 1, 0)
+	Click.BackgroundTransparency = 1
+	Click.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
+	Click.FontSize = Enum.FontSize.Size14
+	Click.TextTransparency = 1
+	Click.TextSize = 14
+	Click.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Click.Font = Enum.Font.SourceSans
+	Click.Parent = KeybindPart
+
+	local UICorner2 = Instance.new("UICorner")
+	UICorner2.CornerRadius = UDim.new(0, 5)
+	UICorner2.Parent = Click
+	
+	local lastId = {}
+	local event = Instance.new("BindableEvent")
+	local currentKey = default
+	local isEditing = false
+	
+	local function updateText()
+		CurrentKey.Text = (currentKey.Name)
+	end
+	
+	self.realSelf:newConnection(uis.InputBegan:Connect(function(key, gp)
+		if gp then
+			return
+		end
+		if self.realSelf.canDoActions == false then
+			return
+		end
+		if key.KeyCode == Enum.KeyCode.Unknown then
+			return
+		end
+		
+		if isEditing then
+			isEditing = false
+			if key.KeyCode == Enum.KeyCode.Backspace then
+				updateText()
+				return
+			end
+			currentKey = key.KeyCode
+			updateText()
+		else
+			if key.KeyCode == currentKey then
+				event:Fire()
+				local id = {}
+				lastId = id
+				Image.Image = "rbxassetid://7072706620"
+				task.spawn(function()
+					wait(.5)
+					if lastId == id then
+						Image.Image = "rbxassetid://7072717958"
+					end
+				end)
+			end
+		end
+	end))
+	
+	self.realSelf:newConnection(Click.MouseButton1Down:Connect(function()
+		if not isEditing then
+			isEditing = true
+			CurrentKey.Text = "Waiting for input... Backspace to cancel"
+		end
+	end))
+	
+	updateText()
+	
+	self.realSelf:handleMouseHover(KeybindPart, nil, Click)
+	Keybind.Parent = self.container
+	self.realSelf:refreshCategoriesVisibility()
+	
+	return event.Event, Keybind
 end
 
 function categories:createToggle(text, default)
