@@ -4,13 +4,7 @@
 -- Cinematic free camera for spectating and video production.
 ------------------------------------------------------------------------
 
-local id = {}
-getfenv().freeCameraSettings = {
-	disablePlayerGui = true,
-	disableCoreGui = true,
-	keyMacro = {Enum.KeyCode.LeftShift, Enum.KeyCode.P},
-	id = id,
-}
+local id = getfenv().freeCameraSettings.id
 local pi    = math.pi
 local abs   = math.abs
 local clamp = math.clamp
@@ -521,5 +515,4 @@ ContextActionService:BindActionAtPriority("FreecamToggle", HandleActivationInput
 
 return {
 	Kill = kill,
-	Id = id,
 }
