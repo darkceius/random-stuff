@@ -4,9 +4,12 @@
 -- Cinematic free camera for spectating and video production.
 ------------------------------------------------------------------------
 
+local id = {}
 getfenv().freeCameraSettings = {
 	disablePlayerGui = true,
 	disableCoreGui = true,
+	keyMacro = {Enum.KeyCode.LeftShift, Enum.KeyCode.P},
+	id = {}
 }
 local pi    = math.pi
 local abs   = math.abs
@@ -52,7 +55,7 @@ end
 
 local TOGGLE_INPUT_PRIORITY = Enum.ContextActionPriority.Low.Value
 local INPUT_PRIORITY = Enum.ContextActionPriority.High.Value
-local FREECAM_MACRO_KB = {Enum.KeyCode.LeftShift, Enum.KeyCode.P}
+local FREECAM_MACRO_KB = getfenv().freeCameraSettings.keyMacro
 
 local NAV_GAIN = Vector3.new(1, 1, 1)*64
 local PAN_GAIN = Vector2.new(0.75, 1)*8
@@ -425,7 +428,7 @@ local PlayerState = {} do
 				end
 			end
 		end
-		
+
 		Camera.FieldOfView = cameraFieldOfView
 		cameraFieldOfView = nil
 
@@ -468,36 +471,55 @@ local function StopFreecam()
 end
 
 ------------------------------------------------------------------------
-
-do
-	local enabled = false
-
-	local function ToggleFreecam()
-		if enabled then
-			StopFreecam()
-		else
-			StartFreecam()
-		end
-		enabled = not enabled
+local enabled = false
+local function kill()
+	ContextActionService:UnbindAction("FreecamToggle")
+	if enabled then
+		StopFreecam()
 	end
-
-	local function CheckMacro(macro)
-		for i = 1, #macro - 1 do
-			if not UserInputService:IsKeyDown(macro[i]) then
-				return
-			end
-		end
-		ToggleFreecam()
-	end
-
-	local function HandleActivationInput(action, state, input)
-		if state == Enum.UserInputState.Begin then
-			if input.KeyCode == FREECAM_MACRO_KB[#FREECAM_MACRO_KB] then
-				CheckMacro(FREECAM_MACRO_KB)
-			end
-		end
-		return Enum.ContextActionResult.Pass
-	end
-
-	ContextActionService:BindActionAtPriority("FreecamToggle", HandleActivationInput, false, TOGGLE_INPUT_PRIORITY, FREECAM_MACRO_KB[#FREECAM_MACRO_KB])
+	getfenv().freeCameraSettings = nil
 end
+
+
+
+local function ToggleFreecam()
+	if enabled then
+		StopFreecam()
+	else
+		StartFreecam()
+	end
+	enabled = not enabled
+end
+
+local function CheckMacro(macro)
+	for i = 1, #macro - 1 do
+		if not UserInputService:IsKeyDown(macro[i]) then
+			return
+		end
+	end
+	ToggleFreecam()
+end
+
+local function HandleActivationInput(action, state, input)
+	if getfenv().freeCameraSettings == nil then
+		kill()
+		return
+	end
+	if getfenv().freeCameraSettings.id ~= id then
+		kill()
+		return
+	end
+	if state == Enum.UserInputState.Begin then
+		if input.KeyCode == FREECAM_MACRO_KB[#FREECAM_MACRO_KB] then
+			CheckMacro(FREECAM_MACRO_KB)
+		end
+	end
+	return Enum.ContextActionResult.Pass
+end
+
+ContextActionService:BindActionAtPriority("FreecamToggle", HandleActivationInput, false, TOGGLE_INPUT_PRIORITY, FREECAM_MACRO_KB[#FREECAM_MACRO_KB])
+
+return {
+	Kill = kill,
+	Id = id,
+}
