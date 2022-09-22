@@ -9,7 +9,7 @@ getfenv().freeCameraSettings = {
 	disablePlayerGui = true,
 	disableCoreGui = true,
 	keyMacro = {Enum.KeyCode.LeftShift, Enum.KeyCode.P},
-	id = {}
+	id = id,
 }
 local pi    = math.pi
 local abs   = math.abs
