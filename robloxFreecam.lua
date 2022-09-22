@@ -468,12 +468,9 @@ end
 local enabled = false
 local function kill()
 	ContextActionService:UnbindAction("FreecamToggle")
-	if enabled then
-		StopFreecam()
-	end
 	getfenv().freeCameraSettings = nil
+	StopFreecam()
 end
-
 
 
 local function ToggleFreecam()
